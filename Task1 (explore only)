@@ -1,4 +1,6 @@
+#Importing random to generate random numbers.
 import random as r
+#Establish global variables for each cafeteria's mean and deviation. + the optimum happiness constant.
 optimumHappiness = 2000
 cafe1mean = 10
 cafe1dev = 5
@@ -10,11 +12,14 @@ cafe4mean = 3
 cafe4dev = 15
 
 def exploreOnly():
+    #Starts at day 0 and with happiness in each cafe at 0.
     days = 0
     cafe1happiness = 0
     cafe2happiness = 0
     cafe3happiness = 0
     cafe4happiness = 0
+    #Adds to the first cafe's happiness a random value that is within the first cafe's deviation around-
+    #its mean. Does this for first 50 days then moves to next cafeteria for 50 days and so on.
     while days >= 0 and days <= 49:
         cafe1happiness += r.normalvariate(cafe1mean, cafe1dev)
         days += 1
@@ -27,5 +32,7 @@ def exploreOnly():
     while days >= 150 and days <= 199:
         cafe4happiness += r.normalvariate(cafe4mean, cafe4dev)
         days += 1
+    #Adds together the total of all the cafeterias' happiness values. Returns this with 2 significant
+    #figures of precision. The function for that was found online.
     actualTotalHappiness = cafe1happiness + cafe2happiness + cafe3happiness + cafe4happiness
-    return("%.*f"%(2,actualTotalHappiness))
+    return "%.*f"%(2,actualTotalHappiness)

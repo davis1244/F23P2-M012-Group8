@@ -2,14 +2,14 @@
 import random as r
 #Establish global variables for each cafeteria's mean and deviation. + the optimum happiness constant.
 optimumHappiness = 2000
-cafe1mean = 10
-cafe1dev = 5
-cafe2mean = 7
+cafe1mean = 7
+cafe1dev = 3
+cafe2mean = 4
 cafe2dev = 10
-cafe3mean = 5
-cafe3dev = 3
-cafe4mean = 3
-cafe4dev = 15
+cafe3mean = 10
+cafe3dev = 6
+cafe4mean = 5
+cafe4dev = 2
 
 def exploreOnly():
     #Starts at day 0 and with happiness in each cafe at 0.

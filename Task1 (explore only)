@@ -28,6 +28,4 @@ def exploreOnly():
         cafe4happiness += r.normalvariate(cafe4mean, cafe4dev)
         days += 1
     actualTotalHappiness = cafe1happiness + cafe2happiness + cafe3happiness + cafe4happiness
-    expectedTotalHappiness = 50 * (cafe1mean + cafe2mean + cafe3mean + cafe4mean)
-    print("Expected Happiness:", expectedTotalHappiness, ", ", "Actual Happiness:", "%.*f"%(2,actualTotalHappiness))
-    return(expectedTotalHappiness,"%.*f"%(2,actualTotalHappiness))
+    return("%.*f"%(2,actualTotalHappiness))

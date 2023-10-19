@@ -1,0 +1,2 @@
+"%.*f"%(2,INSERTNUMBER)
+Found online so no idea how it works, but the first input is the number of digits you want after the period and the second input is the number itself.

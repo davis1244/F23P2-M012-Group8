@@ -1,0 +1,69 @@
+import random as r
+cafeteria1mean = 7
+cafeteria1deviation = 3
+cafeteria2mean = 4
+cafeteria2deviation = 10
+cafeteria3mean = 10
+cafeteria3deviation = 6
+cafeteria4mean = 5
+cafeteria4deviation = 2
+optimumHappiness = max(cafeteria1mean, cafeteria2mean,cafeteria3mean,cafeteria4mean) * 200
+
+def eGreedy(e=10) -> float:
+    totalHappiness = 0
+    storebest = 0
+
+    cafeteria1info = [0, cafeteria1mean, cafeteria1deviation, 0, 0]
+    cafeteria2info = [0, cafeteria2mean, cafeteria2deviation, 0, 0]
+    cafeteria3info = [0, cafeteria3mean, cafeteria3deviation, 0, 0]
+    cafeteria4info = [0, cafeteria4mean, cafeteria4deviation, 0, 0]
+
+    happinessArray = []
+
+    cafeteria1info[0] += r.normalvariate(cafeteria1info[1], cafeteria1info[2])
+    cafeteria2info[0] += r.normalvariate(cafeteria2info[1], cafeteria2info[2])
+    cafeteria3info[0] += r.normalvariate(cafeteria3info[1], cafeteria3info[2])
+    cafeteria4info[0] += r.normalvariate(cafeteria4info[1], cafeteria4info[2])
+
+    happinessArray.append(cafeteria1info)
+    happinessArray.append(cafeteria2info)
+    happinessArray.append(cafeteria3info)
+    happinessArray.append(cafeteria4info)
+
+    e = e/100
+    ran = r.random()
+    days = 0
+
+    while days < 196:
+        happinessArray.sort()
+        bestinfo = happinessArray[3]
+        if ran < e:
+            i = r.randint(1,4)
+            if i == 1:
+                cafeteria1info[3] += 1
+                cafeteria1info[4] += r.normalvariate(cafeteria1info[1], cafeteria1info[2])
+                cafeteria1info[0] = cafeteria1info[4] / cafeteria1info[3]
+                totalHappiness += cafeteria1info[0]
+            elif i == 2:
+                cafeteria2info[3] += 1
+                cafeteria2info[4] += r.normalvariate(cafeteria2info[1], cafeteria2info[2])
+                cafeteria2info[0] = cafeteria2info[4] / cafeteria2info[3]
+                totalHappiness += cafeteria2info[0]
+            elif i == 3:
+                cafeteria3info[3] += 1
+                cafeteria3info[4] += r.normalvariate(cafeteria3info[1], cafeteria3info[2])
+                cafeteria3info[0] = cafeteria3info[4] / cafeteria3info[3]
+                totalHappiness += cafeteria3info[0]
+            elif i == 4:
+                cafeteria4info[3] += 1
+                cafeteria4info[4] += r.normalvariate(cafeteria4info[1], cafeteria4info[2])
+                cafeteria4info[0] = cafeteria4info[4] / cafeteria4info[3]
+                totalHappiness += cafeteria4info[0]
+            days += 1
+        else:
+            bestinfo[3] += 1
+            storebest += r.normalvariate(bestinfo[1], bestinfo[2])
+            bestinfo[0] = storebest / bestinfo[3]
+            totalHappiness += bestinfo[0]
+            days += 1
+    return float("%.*f"%(2, totalHappiness))

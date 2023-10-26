@@ -1,38 +1,34 @@
-#Importing random to generate random numbers.
-import random as r
-#Establish global variables for each cafeteria's mean and deviation. + the optimum happiness constant.
-optimumHappiness = 2000
-cafe1mean = 7
-cafe1dev = 3
-cafe2mean = 4
-cafe2dev = 10
-cafe3mean = 10
-cafe3dev = 6
-cafe4mean = 5
-cafe4dev = 2
 
-def exploreOnly():
-    #Starts at day 0 and with happiness in each cafe at 0.
-    days = 0
-    cafe1happiness = 0
-    cafe2happiness = 0
-    cafe3happiness = 0
-    cafe4happiness = 0
-    #Adds to the first cafe's happiness a random value that is within the first cafe's deviation around-
-    #its mean. Does this for first 50 days then moves to next cafeteria for 50 days and so on.
-    while days >= 0 and days <= 49:
-        cafe1happiness += r.normalvariate(cafe1mean, cafe1dev)
-        days += 1
-    while days >= 50 and days <= 99:
-        cafe2happiness += r.normalvariate(cafe2mean, cafe2dev)
-        days += 1
-    while days >= 100 and days <= 149:
-        cafe3happiness += r.normalvariate(cafe3mean, cafe3dev)
-        days += 1
-    while days >= 150 and days <= 199:
-        cafe4happiness += r.normalvariate(cafe4mean, cafe4dev)
-        days += 1
-    #Adds together the total of all the cafeterias' happiness values. Returns this with 2 significant
-    #figures of precision. The function for that was found online.
-    actualTotalHappiness = cafe1happiness + cafe2happiness + cafe3happiness + cafe4happiness
-    return "%.*f"%(2,actualTotalHappiness)
+import random
+
+# cafe 1, 2, 3, 4
+# mean
+#
+c1Mean = 7
+c2Mean = 4
+c3Mean = 10
+c4Mean = 5
+
+c1Dev = 3
+c2Dev = 10
+c3Dev = 6
+c4Dev = 2
+
+
+def exploreOnly() -> float:
+    visits = 50
+    happiness = 0
+    for i in range(visits):
+        c1 = random.normalvariate(c1Mean, c1Dev)
+        c2 = random.normalvariate(c2Mean, c2Dev)
+        c3 = random.normalvariate(c3Mean, c3Dev)
+        c4 = random.normalvariate(c4Mean, c4Mean)
+        happiness += c1
+        happiness += c2
+        happiness += c3
+        happiness += c4
+    return ("%.2f" % happiness)
+
+
+x = exploreOnly()
+print(x)

@@ -1,0 +1,50 @@
+def simulation(t=50, e=10):
+        # Function to calculate expected happiness
+        def calculate_expected_happiness():
+            return 50 * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
+
+        # Function to calculate expected regret
+        def calculate_expected_regret(expected_hap):
+            return optimumHappiness - expected_hap
+
+        # Function to simulate a strategy t times
+        def simulate_strategy(strategy_func):
+            total_happiness = sum(strategy_func() for _ in range(t))
+            return total_happiness / t
+
+        print("Optimum Happiness:", optimumHappiness)
+        #explore only function print
+        print("\nExplore Only:")
+
+        expected_hap = calculate_expected_happiness()
+        expected_regret = calculate_expected_regret(expected_hap)
+        exploreValAvg = simulate_strategy(exploreOnly)
+
+        print("Expected Happiness: {:.2f}".format(expected_hap))
+        print("Expected Regret: {:.2f}".format(expected_regret))
+        print("Simulated Happiness: {:.2f}".format(exploreValAvg))
+        print("Simulated Regret: {:.2f}".format(optimumHappiness - exploreValAvg))
+        #Exploit Only function
+        print("\nExploit Only:")
+        #too long beacuse typing all the means out twice would be unrealistic
+        toolong = cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean
+        expected_hap = toolong + 196 * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean)
+        expected_regret = optimumHappiness - expected_hap
+        exploitValAvg = simulate_strategy(exploitOnly)
+
+        print("Expected Happiness: {:.2f}".format(expected_hap))
+        print("Expected Regret: {:.2f}".format(expected_regret))
+        print("Simulated Happiness: {:.2f}".format(exploitValAvg))
+        print("Simulated Regret: {:.2f}".format(optimumHappiness - exploitValAvg))
+
+        print("\neGreedy:")
+
+        e_values = [10 * x for x in [180, 2.5, 4, 5, 7]]
+        expected_hap = sum(e_values)
+        expected_regret = optimumHappiness - expected_hap
+        greedValAvg = simulate_strategy(eGreedy)
+
+        print("Expected Happiness: {:.2f}".format(expected_hap))
+        print("Expected Regret: {:.2f}".format(expected_regret))
+        print("Simulated Happiness: {:.2f}".format(greedValAvg))
+        print("Simulated Regret: {:.2f}".format(optimumHappiness - greedValAvg))

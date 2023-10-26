@@ -1,50 +1,266 @@
-def simulation(t=50, e=10):
-        # Function to calculate expected happiness
-        def calculate_expected_happiness():
-            return 50 * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
+#Importing random to generate random numbers.
+import random as r
+#Establish global variables for each cafeteria's mean and deviation. + the optimum happiness constant.
+optimumHappiness = 2000
+cafeteria1mean = 7
+cafeteria1deviation = 3
+cafeteria2mean = 4
+cafeteria2deviation = 10
+cafeteria3mean = 10
+cafeteria3deviation = 6
+cafeteria4mean = 5
+cafeteria4deviation = 2
+def exploitOnly():
+    #Establishes happiness variables for each cafeteria.
+    cafeteria1happiness = 0
+    cafeteria2happiness = 0
+    cafeteria3happiness = 0
+    cafeteria4happiness = 0
+    #Makes lists which contain the variables for a cafeteria's happiness, its mean, and its deviation.
+    cafeteria1info = [cafeteria1happiness, cafeteria1mean, cafeteria1deviation]
+    cafeteria2info = [cafeteria2happiness, cafeteria2mean, cafeteria2deviation]
+    cafeteria3info = [cafeteria3happiness, cafeteria3mean, cafeteria3deviation]
+    cafeteria4info = [cafeteria4happiness, cafeteria4mean, cafeteria4deviation]
+    #Does a test run of each cafeteria.
+    test1 = r.normalvariate(cafeteria1mean, cafeteria1deviation)
+    test2 = r.normalvariate(cafeteria2mean, cafeteria2deviation)
+    test3 = r.normalvariate(cafeteria3mean, cafeteria3deviation)
+    test4 = r.normalvariate(cafeteria4mean, cafeteria4deviation)
+    #Assigns these as the cafeterias' respective happiness values.
+    cafeteria1info[0] = test1
+    cafeteria2info[0] = test2
+    cafeteria3info[0] = test3
+    cafeteria4info[0] = test4
+    #Adds the first four runs to the total.
+    totalHappiness = test1 + test2 + test3 + test4
+    #Makes an array of the cafeterias' info lists.
+    HappinessArray = []
+    HappinessArray.append(cafeteria1info)
+    HappinessArray.append(cafeteria2info)
+    HappinessArray.append(cafeteria3info)
+    HappinessArray.append(cafeteria4info)
+    #Sorts them by the first value in each list (the happiness value).
+    HappinessArray.sort()
+    #The last list will have the greatest happiness value, thus it's assigned as topHappiness.
+    topHappiness = HappinessArray[3]
+    #Runs the rest of the days with the top cafeteria from the first 4 runs' mean and deviation.
+    days = 0
+    while days < 196:
+        totalHappiness += r.normalvariate(topHappiness[1], topHappiness[2])
+        days += 1
+    #Returns the total happiness with two significant figures (function for that found on internet.
+    return float("%.*f"%(2, totalHappiness))
 
-        # Function to calculate expected regret
-        def calculate_expected_regret(expected_hap):
-            return optimumHappiness - expected_hap
+def exploreOnly():
+    #Establishes happiness variables for each cafeteria.
+    cafeteria1happiness = 0
+    cafeteria2happiness = 0
+    cafeteria3happiness = 0
+    cafeteria4happiness = 0
+    #Adds to the first cafeteria's happiness value a random value that is within the first cafeteria's deviation
+    #around its mean. Does this for first 50 days then moves to next cafeteria for 50 days and so on.
+    days = 0
+    while days >= 0 and days <= 49:
+        cafeteria1happiness += r.normalvariate(cafeteria1mean, cafeteria1deviation)
+        days += 1
+    while days >= 50 and days <= 99:
+        cafeteria2happiness += r.normalvariate(cafeteria2mean, cafeteria2deviation)
+        days += 1
+    while days >= 100 and days <= 149:
+        cafeteria3happiness += r.normalvariate(cafeteria3mean, cafeteria3deviation)
+        days += 1
+    while days >= 150 and days <= 199:
+        cafeteria4happiness += r.normalvariate(cafeteria4mean, cafeteria4deviation)
+        days += 1
+    #Adds together the total of all the cafeterias' happiness values. Returns this with 2 significant
+    #figures of precision.
+    actualTotalHappiness = cafeteria1happiness + cafeteria2happiness + cafeteria3happiness + cafeteria4happiness
+    return float("%.*f"%(2,actualTotalHappiness))
 
-        # Function to simulate a strategy t times
-        def simulate_strategy(strategy_func):
-            total_happiness = sum(strategy_func() for _ in range(t))
-            return total_happiness / t
+def eGreedy(e=10):
+    #Establishes total happiness and cafeterias' happiness values.
+    totalHappiness = 0
+    cafeteria1happiness = 0
+    cafeteria2happiness = 0
+    cafeteria3happiness = 0
+    cafeteria4happiness = 0
+    #Makes lists for each cafeteria containing their happiness value, their mean, and their deviation.
+    cafeteria1info = [cafeteria1happiness, cafeteria1mean, cafeteria1deviation]
+    cafeteria2info = [cafeteria2happiness, cafeteria2mean, cafeteria2deviation]
+    cafeteria3info = [cafeteria3happiness, cafeteria3mean, cafeteria3deviation]
+    cafeteria4info = [cafeteria4happiness, cafeteria4mean, cafeteria4deviation]
+    #Establishes a list of the lists above, a 2D array.
+    happinessArray = []
+    #First, visits each cafeteria one time, assigning the value found to the happiness value in each
+    #happiness list.
+    cafeteria1info[0] = r.normalvariate(cafeteria1mean, cafeteria1deviation)
+    cafeteria2info[0] = r.normalvariate(cafeteria2mean, cafeteria2deviation)
+    cafeteria3info[0] = r.normalvariate(cafeteria3mean, cafeteria3deviation)
+    cafeteria4info[0] = r.normalvariate(cafeteria4mean, cafeteria4deviation)
+    #Adds all cafeterias' happiness lists to the 2D array.
+    happinessArray.append(cafeteria1info)
+    happinessArray.append(cafeteria2info)
+    happinessArray.append(cafeteria3info)
+    happinessArray.append(cafeteria4info)
+    #Makes e a decimal value.
+    e = e / 100
+    #Gives a random value between 0 and 1.
+    ran = r.random()
+    #The while loop starts at 0 and goes to 195, totaling 200 trials when added to first 4 runs above.
+    days = 0
+    while days < 196:
+        #Sorts the 2D array containing the four cafeteria happiness lists. The last list in it will
+        #be the one the one with the greatest happiness value.
+        happinessArray.sort()
+        #Takes the last list of the array and takes the second value within that list, which is
+        #its mean, as the best.
+        bestCafeteriaMean = happinessArray[3][1]
+        #Takes the last list of the array and takes the second value within that list, which is
+        #its deviation, as the best.
+        bestCafeteriaDev = happinessArray[3][2]
+        #Runs if e is greater than the random value generated before; a 10% chance assuming e = 10.
+        if ran < e:
+            #Picks randomly between the four cafeterias.
+            i = r.randint(1,4)
+            if i == 1:
+                #Creates new variable for happiness value of a given cafeteria's happiness list,
+                #changing it, adding it to the total, and then redoing the happiness 2D array with it.
+                cafe1NewHappiness = r.normalvariate(cafeteria1mean, cafeteria1deviation)
+                totalHappiness += cafe1NewHappiness
+                #The entire list is popped and then replaced identically, with the exception of the
+                #new happiness value being inserted in.
+                #This means that when the loop is ran again, this cafeteria's new happiness value will
+                #be considered as a possibility for being the best mean and deviation.
+                #This process is repeated in each of the following if statements based on i's value.
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                cafeteria1info = [cafe1NewHappiness, cafeteria1mean, cafeteria1deviation]
+                happinessArray.append(cafeteria1info)
+                happinessArray.append(cafeteria2info)
+                happinessArray.append(cafeteria3info)
+                happinessArray.append(cafeteria4info)
+            elif i == 2:
+                cafe2NewHappiness = r.normalvariate(cafeteria2mean, cafeteria2deviation)
+                totalHappiness += cafe2NewHappiness
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                cafeteria2info = [cafe2NewHappiness, cafeteria2mean, cafeteria2deviation]
+                happinessArray.append(cafeteria1info)
+                happinessArray.append(cafeteria2info)
+                happinessArray.append(cafeteria3info)
+                happinessArray.append(cafeteria4info)
+            elif i == 3:
+                cafe3NewHappiness = r.normalvariate(cafeteria3mean, cafeteria3deviation)
+                totalHappiness += cafe3NewHappiness
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                cafeteria3info = [cafe3NewHappiness, cafeteria3mean, cafeteria3deviation]
+                happinessArray.append(cafeteria1info)
+                happinessArray.append(cafeteria2info)
+                happinessArray.append(cafeteria3info)
+                happinessArray.append(cafeteria4info)
+            elif i == 4:
+                cafe4NewHappiness = r.normalvariate(cafeteria4mean, cafeteria4deviation)
+                totalHappiness += cafe4NewHappiness
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                happinessArray.pop()
+                cafeteria4info = [cafe4NewHappiness, cafeteria4mean, cafeteria4deviation]
+                happinessArray.append(cafeteria1info)
+                happinessArray.append(cafeteria2info)
+                happinessArray.append(cafeteria3info)
+                happinessArray.append(cafeteria4info)
+            #Continues the loop by adding a day.
+            days += 1
+        else:
+            #For the other 90% of the time that the random value between 0 and 1 is higher than 0.1,
+            #the best cafeteria's happiness value is added to the total happiness.
+            totalHappiness += r.normalvariate(bestCafeteriaMean, bestCafeteriaDev)
+            #Continues the loop.
+            days += 1
+    #Returns the total happiness with 2 significant figures of precision.
+    return float("%.*f"%(2, totalHappiness))
 
-        print("Optimum Happiness:", optimumHappiness)
-        #explore only function print
-        print("\nExplore Only:")
+def simulation(t, e=10):
+    # Function to calculate expected happiness
+    def calculate_expected_happiness():
+        return 50 * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
 
-        expected_hap = calculate_expected_happiness()
-        expected_regret = calculate_expected_regret(expected_hap)
-        exploreValAvg = simulate_strategy(exploreOnly)
+    # Function to calculate expected regret
+    def calculate_expected_regret(expected_hap):
+        return optimumHappiness - expected_hap
 
-        print("Expected Happiness: {:.2f}".format(expected_hap))
-        print("Expected Regret: {:.2f}".format(expected_regret))
-        print("Simulated Happiness: {:.2f}".format(exploreValAvg))
-        print("Simulated Regret: {:.2f}".format(optimumHappiness - exploreValAvg))
-        #Exploit Only function
-        print("\nExploit Only:")
-        #too long beacuse typing all the means out twice would be unrealistic
-        toolong = cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean
-        expected_hap = toolong + 196 * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean)
-        expected_regret = optimumHappiness - expected_hap
-        exploitValAvg = simulate_strategy(exploitOnly)
+    # Function to simulate a strategy 't' times
+    def simulate_strategy(strategy_func):
+        total_happiness = sum(strategy_func() for _ in range(t))
+        return total_happiness / t
 
-        print("Expected Happiness: {:.2f}".format(expected_hap))
-        print("Expected Regret: {:.2f}".format(expected_regret))
-        print("Simulated Happiness: {:.2f}".format(exploitValAvg))
-        print("Simulated Regret: {:.2f}".format(optimumHappiness - exploitValAvg))
+    # Print the optimum happiness value
+    print("Optimum Happiness:", optimumHappiness)
 
-        print("\neGreedy:")
+    # Explore Only Strategy
+    print("\nExplore Only:")
 
-        e_values = [10 * x for x in [180, 2.5, 4, 5, 7]]
-        expected_hap = sum(e_values)
-        expected_regret = optimumHappiness - expected_hap
-        greedValAvg = simulate_strategy(eGreedy)
+    # Calculate expected happiness using the 'calculate_expected_happiness' function
+    expected_hap = calculate_expected_happiness()
 
-        print("Expected Happiness: {:.2f}".format(expected_hap))
-        print("Expected Regret: {:.2f}".format(expected_regret))
-        print("Simulated Happiness: {:.2f}".format(greedValAvg))
-        print("Simulated Regret: {:.2f}".format(optimumHappiness - greedValAvg))
+    # Calculate expected regret using the 'calculate_expected_regret' function
+    expected_regret = calculate_expected_regret(expected_hap)
+
+    # Simulate the 'exploreOnly' strategy and calculate the average happiness
+    exploreValAvg = simulate_strategy(exploreOnly)
+
+    # Print the results for Explore Only
+    print("Expected Happiness: {:.2f}".format(expected_hap))
+    print("Expected Regret: {:.2f}".format(expected_regret))
+    print("Simulated Happiness: {:.2f}".format(exploreValAvg))
+    print("Simulated Regret: {:.2f}".format(optimumHappiness - exploreValAvg))
+
+    # Exploit Only Strategy
+    print("\nExploit Only:")
+
+    # Calculate the sum of cafeteria means
+    toolong = cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean
+
+    # Calculate expected happiness for the Exploit Only strategy
+    expected_hap = toolong + 196 * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean)
+
+    # Calculate expected regret for the Exploit Only strategy
+    expected_regret = optimumHappiness - expected_hap
+
+    # Simulate the 'exploitOnly' strategy and calculate the average happiness
+    exploitValAvg = simulate_strategy(exploitOnly)
+
+    # Print the results for Exploit Only
+    print("Expected Happiness: {:.2f}".format(expected_hap))
+    print("Expected Regret: {:.2f}".format(expected_regret))
+    print("Simulated Happiness: {:.2f}".format(exploitValAvg))
+    print("Simulated Regret: {:.2f}".format(optimumHappiness - exploitValAvg))
+
+    # eGreedy Strategy
+    print("\neGreedy:")
+
+    # Define a list of 'e_values'
+    e_values = [10 * x for x in [180, 2.5, 4, 5, 7]]
+
+    # Calculate the expected happiness for the eGreedy strategy by summing the 'e_values'
+    expected_hap = sum(e_values)
+
+    # Calculate expected regret for the eGreedy strategy
+    expected_regret = optimumHappiness - expected_hap
+
+    # Simulate the 'eGreedy' strategy and calculate the average happiness
+    greedValAvg = simulate_strategy(eGreedy)
+
+    # Print the results for eGreedy
+    print("Expected Happiness: {:.2f}".format(expected_hap))
+    print("Expected Regret: {:.2f}".format(expected_regret))
+    print("Simulated Happiness: {:.2f}".format(greedValAvg))
+    print("Simulated Regret: {:.2f}".format(optimumHappiness - greedValAvg))

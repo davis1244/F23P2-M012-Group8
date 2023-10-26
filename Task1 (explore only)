@@ -1,4 +1,3 @@
-
 import random
 
 # cafe 1, 2, 3, 4
@@ -18,11 +17,13 @@ c4Dev = 2
 def exploreOnly() -> float:
     visits = 50
     happiness = 0
+# Loop through visits and store numbers into each cafe
     for i in range(visits):
         c1 = random.normalvariate(c1Mean, c1Dev)
         c2 = random.normalvariate(c2Mean, c2Dev)
         c3 = random.normalvariate(c3Mean, c3Dev)
         c4 = random.normalvariate(c4Mean, c4Mean)
+# add distribution to happiness
         happiness += c1
         happiness += c2
         happiness += c3

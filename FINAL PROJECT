@@ -65,7 +65,7 @@ def exploreOnly() -> float:
         happiness += c3
         happiness += c4
 # Return 2 decimal places
-    return ("%.2f" % happiness)
+    return happiness
 
 
 
@@ -138,7 +138,7 @@ def eGreedy(e=10) -> float:
                 cafeteria3info[4] += r.normalvariate(cafeteria3info[1], cafeteria3info[2])
                 cafeteria3info[0] = cafeteria3info[4] / cafeteria3info[3]
                 totalHappiness += cafeteria3info[0]
-            elif i == 4:
+            else: # i == 4
                 cafeteria4info[3] += 1
                 cafeteria4info[4] += r.normalvariate(cafeteria4info[1], cafeteria4info[2])
                 cafeteria4info[0] = cafeteria4info[4] / cafeteria4info[3]
@@ -204,7 +204,7 @@ def simulation(t, e=10):
 
     #Did the calculations to determine the expected happiness, based off the lecture slide but
     #changed to be for 4 cafeterias and 200 days.
-    calculations = ((((e / 4)) / 100) * 200) * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
+    calculations = (((e / 4) / 100) * 200) * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
     expected_hap = (((100-e) / 100) * 200) * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean) + calculations
     expected_regret = optimumHappiness - expected_hap
     greedValAvg = simulate_strategy(eGreedy)

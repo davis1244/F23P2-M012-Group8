@@ -176,23 +176,27 @@ def simulation(t, e=10):
         return total_happiness / t
 
     print("Optimum Happiness:", optimumHappiness)
-    # explore only function print
+
+    # Explore Only strategy
     print("\nExplore Only:")
 
     expected_hap = calculate_expected_happiness()
     expected_regret = calculate_expected_regret(expected_hap)
+    # Calls a function exploreOnly, not defined in this code
     exploreValAvg = simulate_strategy(exploreOnly)
-
     print("Expected Happiness: {:.2f}".format(expected_hap))
     print("Expected Regret: {:.2f}".format(expected_regret))
     print("Simulated Happiness: {:.2f}".format(exploreValAvg))
     print("Simulated Regret: {:.2f}".format(optimumHappiness - exploreValAvg))
-    # Exploit Only function
+
+    # Exploit Only strategy
     print("\nExploit Only:")
-    # too long beacuse typing all the means out twice would be unrealistic.
+
+    # Calculate the expected happiness and regret for the Exploit Only strategy
     toolong = cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean
     expected_hap = toolong + 196 * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean)
     expected_regret = optimumHappiness - expected_hap
+    # Calls a function exploitOnly, not defined in this code
     exploitValAvg = simulate_strategy(exploitOnly)
 
     print("Expected Happiness: {:.2f}".format(expected_hap))
@@ -200,13 +204,15 @@ def simulation(t, e=10):
     print("Simulated Happiness: {:.2f}".format(exploitValAvg))
     print("Simulated Regret: {:.2f}".format(optimumHappiness - exploitValAvg))
 
+    # eGreedy strategy
     print("\neGreedy:")
 
-    #Did the calculations to determine the expected happiness, based off the lecture slide but
-    #changed to be for 4 cafeterias and 200 days.
+    # Calculate the expected happiness and regret for the eGreedy strategy
     calculations = (((e / 4) / 100) * 200) * (cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean)
-    expected_hap = (((100-e) / 100) * 200) * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean) + calculations
+    expected_hap = (((100 - e) / 100) * 200) * max(cafeteria1mean, cafeteria2mean, cafeteria3mean,
+                                                   cafeteria4mean) + calculations
     expected_regret = optimumHappiness - expected_hap
+    # Calls a function eGreedy, not defined in this code
     greedValAvg = simulate_strategy(eGreedy)
 
     print("Expected Happiness: {:.2f}".format(expected_hap))

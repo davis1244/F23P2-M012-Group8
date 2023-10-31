@@ -65,7 +65,7 @@ def exploreOnly() -> float:
         happiness += c3
         happiness += c4
 # Return 2 decimal places
-    return happiness
+    return ("%.2f" % happiness)
 
 
 

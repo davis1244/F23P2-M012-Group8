@@ -182,7 +182,7 @@ def simulation(t, e=10):
 
     expected_hap = calculate_expected_happiness()
     expected_regret = calculate_expected_regret(expected_hap)
-    # Calls a function exploreOnly, not defined in this code
+    # Calls the function exploreOnly.
     exploreValAvg = simulate_strategy(exploreOnly)
     print("Expected Happiness: {:.2f}".format(expected_hap))
     print("Expected Regret: {:.2f}".format(expected_regret))
@@ -196,7 +196,7 @@ def simulation(t, e=10):
     toolong = cafeteria1mean + cafeteria2mean + cafeteria3mean + cafeteria4mean
     expected_hap = toolong + 196 * max(cafeteria1mean, cafeteria2mean, cafeteria3mean, cafeteria4mean)
     expected_regret = optimumHappiness - expected_hap
-    # Calls a function exploitOnly, not defined in this code
+    # Calls the function exploitOnly.
     exploitValAvg = simulate_strategy(exploitOnly)
 
     print("Expected Happiness: {:.2f}".format(expected_hap))
@@ -212,7 +212,7 @@ def simulation(t, e=10):
     expected_hap = (((100 - e) / 100) * 200) * max(cafeteria1mean, cafeteria2mean, cafeteria3mean,
                                                    cafeteria4mean) + calculations
     expected_regret = optimumHappiness - expected_hap
-    # Calls a function eGreedy, not defined in this code
+    # Calls the function eGreedy.
     greedValAvg = simulate_strategy(eGreedy)
 
     print("Expected Happiness: {:.2f}".format(expected_hap))

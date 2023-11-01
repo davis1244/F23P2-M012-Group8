@@ -64,7 +64,7 @@ def exploreOnly() -> float:
         happiness += c2
         happiness += c3
         happiness += c4
-# Return 2 decimal places
+# Returns the total happiness
     return happiness
 
 
@@ -158,7 +158,7 @@ def eGreedy(e=10) -> float:
             #Continues the loop.
             days += 1
 
-    #Returns the total happiness as a float with two significant figures.
+    #Returns the total happiness as a float
     return float(totalHappiness)
 
 def simulation(t, e=10):

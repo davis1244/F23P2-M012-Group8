@@ -117,32 +117,38 @@ def eGreedy(e=10) -> float:
                 #Adds one to the count of how many times the cafeteria's been visited.
                 cafeteria1info[3] += 1
 
-                #Adds a visit's happiness to the total happiness of the cafeteria.
-                cafeteria1info[4] += r.normalvariate(cafeteria1info[1], cafeteria1info[2])
+                #Creates a random value derived from the cafeteria's mean and deviation.
+                x = r.normalvariate(cafeteria1info[1], cafeteria1info[2])
 
                 #The happiness of the cafeteria is then calculated as the total happiness of the cafeteria
                 # divided by the number of visits, thus giving the average of all the visits.
                 cafeteria1info[0] = cafeteria1info[4] / cafeteria1info[3]
 
-                #This value is then added to the total.
-                totalHappiness += cafeteria1info[0]
+                #Adds the random value to the storage.
+                cafeteria1info[4] += x
+
+                #Also adds it to the total.
+                totalHappiness += x
 
             #The same happens for each value of i.
             elif i == 2:
                 cafeteria2info[3] += 1
-                cafeteria2info[4] += r.normalvariate(cafeteria2info[1], cafeteria2info[2])
+                x = r.normalvariate(cafeteria2info[1], cafeteria2info[2])
                 cafeteria2info[0] = cafeteria2info[4] / cafeteria2info[3]
-                totalHappiness += cafeteria2info[0]
+                cafeteria2info[4] += x
+                totalHappiness += x
             elif i == 3:
                 cafeteria3info[3] += 1
-                cafeteria3info[4] += r.normalvariate(cafeteria3info[1], cafeteria3info[2])
+                x = r.normalvariate(cafeteria3info[1], cafeteria3info[2])
                 cafeteria3info[0] = cafeteria3info[4] / cafeteria3info[3]
-                totalHappiness += cafeteria3info[0]
-            else: # i == 4
+                cafeteria3info[4] += x
+                totalHappiness += x
+            else:     # i == 4
                 cafeteria4info[3] += 1
-                cafeteria4info[4] += r.normalvariate(cafeteria4info[1], cafeteria4info[2])
+                x = r.normalvariate(cafeteria4info[1], cafeteria4info[2])
                 cafeteria4info[0] = cafeteria4info[4] / cafeteria4info[3]
-                totalHappiness += cafeteria4info[0]
+                cafeteria4info[4] += x
+                totalHappiness += x
 
             #Continues the loop.
             days += 1
@@ -151,9 +157,10 @@ def eGreedy(e=10) -> float:
         #to the first one.
         else:
             bestinfo[3] += 1
-            storebest += r.normalvariate(bestinfo[1], bestinfo[2])
+            x = r.normalvariate(bestinfo[1], bestinfo[2])
             bestinfo[0] = storebest / bestinfo[3]
-            totalHappiness += bestinfo[0]
+            bestinfo[4] += x
+            totalHappiness += x
 
             #Continues the loop.
             days += 1
